@@ -11,29 +11,24 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Set;
 
 @Entity
 @Table(name = "A")
 @NoArgsConstructor
 @Setter @Getter
-//@ToString
 @EqualsAndHashCode(of = {"id"})
 public class A implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     private String myString;
 
-//    @OneToMany(mappedBy = "a", fetch = FetchType.EAGER,
-//            cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<B> bSet;
     @OneToMany(mappedBy="a", fetch = FetchType.EAGER, 
     		cascade = CascadeType.ALL, orphanRemoval = true)
-    @MapKey(name="myInt")
-    public Map<Integer, B> bMap;
+    @MapKey(name="b")
+    public Map<String, B> bMap;
 
     public A(String myString) {
         this.myString = myString;
@@ -45,7 +40,7 @@ public class A implements Serializable {
                 "id=" + id +
                 ", myString='" + myString + "' Bs : ";
         for(B b : bMap.values()) {
-        	toReturn += b.getMyInt()+" ";
+        	toReturn += b.getB()+" ";
         }
         toReturn += '}';
         return toReturn;

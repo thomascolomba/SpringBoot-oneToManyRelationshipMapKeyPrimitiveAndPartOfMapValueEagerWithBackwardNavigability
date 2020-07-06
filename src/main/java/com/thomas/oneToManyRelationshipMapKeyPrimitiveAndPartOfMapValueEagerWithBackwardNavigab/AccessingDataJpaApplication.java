@@ -58,10 +58,10 @@ public class AccessingDataJpaApplication {
 		A a2 = new A("myString2");
 		aRepository.save(a1);
 		aRepository.save(a2);
-		bRepository.save(new B(11, a1));
-		bRepository.save(new B(12, a1));
-		bRepository.save(new B(21, a2));
-		bRepository.save(new B(22, a2));
+		bRepository.save(new B("b1", a1));
+		bRepository.save(new B("b2", a1));
+		bRepository.save(new B("b3", a2));
+		bRepository.save(new B("b4", a2));
 		
 		//we can build an A without Bs
 		A a3 = new A("myString3");
@@ -69,13 +69,14 @@ public class AccessingDataJpaApplication {
 	}
 
 	private void modifyData(ARepository aRepository, BRepository bRepository) {
-		//we change a1.myString and a2.myString and we affect a B previously affect at a1 to a2
+		//we change a1.myString and a2.myString and we affect b1 previously affect at a1 to a2 while changing its b, and move b4 from a2 to a1
 		A a1 = aRepository.findByMyString("myString1").get(0);
 		A a2 = aRepository.findByMyString("myString2").get(0);
 		a1.setMyString("myModifiedString1");
 		a2.setMyString("myModifiedString2");
-		B b = bRepository.findByMyInt(11).get(0);
-		b.setMyInt(-11);
+		a2.getBMap().get("b4").setA(a1);
+		B b = bRepository.findByB("b1").get(0);
+		b.setB("b1.1");
 		b.setA(a2);
 		aRepository.save(a1);
 		aRepository.save(a2);
@@ -87,9 +88,9 @@ public class AccessingDataJpaApplication {
 		A a1 = aRepository.findByMyString("myModifiedString1").get(0);
 		aRepository.delete(a1);
 		
-		//we do not delete the B instance -> we want to remove that B instance from the A's list
+		//we do not directly delete the B instance -> we want to remove that B instance from the A's list
 		A a2 = aRepository.findByMyString("myModifiedString2").get(0);
-		a2.getBMap().remove(22);
+		a2.getBMap().remove("b3");
 		aRepository.save(a2);
 	}
 }

@@ -19,17 +19,16 @@ import java.io.Serializable;
 public class B implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
-    private int myInt;
+    private String b;
 
     @ManyToOne
-    @JoinColumn(name = "a_id", nullable = false)
     private A a;
 
-    public B(int myInt, A a) {
-        this.myInt = myInt;
+    public B(String b, A a) {
+        this.b = b;
         this.a = a;
     }
 
@@ -37,7 +36,7 @@ public class B implements Serializable {
     public String toString() {
         return "B{" +
                 "id=" + id +
-                ", myInt=" + myInt +
+                ", b=" + b +
                 ", a.myString=" + a.getMyString() +
                 '}';
     }

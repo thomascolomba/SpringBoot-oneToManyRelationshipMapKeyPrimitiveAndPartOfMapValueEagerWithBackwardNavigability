@@ -8,5 +8,5 @@ import com.thomas.oneToManyRelationshipMapKeyPrimitiveAndPartOfMapValueEagerWith
 
 
 public interface BRepository extends CrudRepository<B, Long> {
-	List<B> findByMyInt(int myInt);
+	List<B> findByB(String b);
 }
